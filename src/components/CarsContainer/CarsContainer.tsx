@@ -1,12 +1,14 @@
-import {useEffect, useState} from "react";
-
-
+import {FC, useEffect, useState} from 'react';
 import {CarForm} from "./CarForm/CarForm";
 import {Cars} from "./Cars/Cars";
 import {ICar} from "../../interfaces/carInterface";
 import {carService} from "../../services/carService";
 
-const CarsContainer = () => {
+interface IProps {
+
+}
+
+const CarsContainer: FC<IProps> = () => {
 
     const [cars, setCars] = useState<ICar[]>([]);
     const [trigger, setTrigger] = useState<boolean>(null);
@@ -17,9 +19,8 @@ const CarsContainer = () => {
     }, [trigger]);
 
     const changeTrigger = () => {
-        setTrigger(prevState=>!prevState);
+        setTrigger(prev => ! prev);
     }
-
 
     return (
         <div>

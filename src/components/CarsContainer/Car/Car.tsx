@@ -1,33 +1,34 @@
 import {FC} from 'react';
-
 import {ICar} from "../../../interfaces/carInterface";
 import {ISetState} from "../../../types/setStateType";
 import {carService} from "../../../services/carService";
 
 interface IProps {
-    car:ICar
-    setCarForUpdate:ISetState<ICar>
-    changeTrigger:()=>void
+    car: ICar;
+    setCarForUpdate:ISetState<ICar>;
+    changeTrigger:()=>void;
 }
-const Car:FC<IProps> = ({car,setCarForUpdate,changeTrigger}) => {
 
- const {id,brand,year,price} = car;
+const Car: FC<IProps> = ({car,setCarForUpdate,changeTrigger}) => {
+    const {id,brand,price,year} = car;
 
-    const deleteById = async () => {
-            await carService.deleteById(id);
-            changeTrigger();
-    };
+    const deleteById = async ()=>{
+        await carService.deleteById(id);
+        changeTrigger();
+    }
 
     return (
-      <div>
-           <div>id:{id}</div>
-           <div>brand:{brand}</div>
-           <div>year:{year}</div>
-           <div>price:{price}</div>
-           <button onClick={()=>setCarForUpdate(car)}>update</button>
-           <button onClick={deleteById}>delete</button>
-      </div>
- );
+        <div>
+            <div>id:{id}</div>
+            <div>brand:{brand}</div>
+            <div>price:{price}</div>
+            <div>year:{year}</div>
+            <button onClick={()=>setCarForUpdate(car)}>Update</button>
+            <button onClick={deleteById}>Delete</button>
+            <br/>
+            <br/>
+        </div>
+    );
 };
 
 export {Car};

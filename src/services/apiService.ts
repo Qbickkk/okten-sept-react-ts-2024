@@ -4,6 +4,6 @@ import {baseURL} from "../constants/urls";
 
 const apiService = axios.create({baseURL});
 
-export{
+export {
     apiService
 }
