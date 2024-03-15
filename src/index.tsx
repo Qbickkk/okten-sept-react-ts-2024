@@ -1,6 +1,8 @@
 import ReactDOM from 'react-dom/client';
+import {RouterProvider} from "react-router-dom";
 
 import './index.css';
+import {router} from "./router";
 
 
 const root = ReactDOM.createRoot(
@@ -8,7 +10,7 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <>
-    index
+    <RouterProvider router={router}/>
   </>
 );
 
