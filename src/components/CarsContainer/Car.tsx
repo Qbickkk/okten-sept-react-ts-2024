@@ -1,4 +1,5 @@
 import {FC} from 'react';
+
 import {ICar} from "../../interfaces";
 import {useAppDispatch} from "../../hooks";
 import {carActions} from "../../store";
@@ -9,8 +10,9 @@ interface IProps {
 
 const Car: FC<IProps> = ({car}) => {
 
-    const {id,brand,price,year} = car;
+    const {id, brand, price, year} = car;
     const dispatch = useAppDispatch();
+
 
     return (
         <div>
@@ -18,8 +20,8 @@ const Car: FC<IProps> = ({car}) => {
             <div>brand:{brand}</div>
             <div>price:{price}</div>
             <div>year:{year}</div>
-            <button onClick={()=>dispatch(carActions.setCarForUpdate(car))}>update</button>
-            <button>delete</button>
+            <button onClick={() => dispatch(carActions.setCarForUpdate(car))}>update</button>
+            <button onClick={() => dispatch(carActions.deleteById(id))}>delete</button>
         </div>
     );
 };

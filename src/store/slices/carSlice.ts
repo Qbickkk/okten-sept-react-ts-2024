@@ -1,8 +1,8 @@
 import {createAsyncThunk, createSlice, isFulfilled} from "@reduxjs/toolkit";
+import {AxiosError} from "axios";
 
 import {ICar} from "../../interfaces";
 import {carService} from "../../services";
-import {AxiosError} from "axios";
 
 interface IState {
     cars: ICar[],
@@ -39,13 +39,37 @@ const create = createAsyncThunk<void, { car: ICar }>(
             return rejectWithValue(errors.response.data);
         }
     }
+);
+
+const updateById = createAsyncThunk<ICar, {id:number, carData:ICar}>(
+    'carSlice/updateById',
+    async ({id, carData}, {rejectWithValue}) => {
+        try {
+            await carService.updateById(id, carData);
+        }catch (e) {
+            const err = e as AxiosError
+            return rejectWithValue(err.response.data)
+        }
+    }
+)
+
+const deleteById = createAsyncThunk<void,number>(
+    'carSlice/deleteById',
+    async (id, {rejectWithValue}) => {
+        try {
+           await carService.deleteById(id)
+        } catch (e) {
+            const errors = e as AxiosError
+            return rejectWithValue(errors.response.data);
+        }
+    }
 )
 
 const carSlice = createSlice({
     name: 'carSlice',
     initialState,
     reducers: {
-        setCarForUpdate: (state,action) => {
+        setCarForUpdate: (state, action) => {
             state.carForUpdate = action.payload
         }
     },
@@ -54,7 +78,10 @@ const carSlice = createSlice({
             .addCase(getAll.fulfilled, (state, action) => {
                 state.cars = action.payload
             })
-            .addMatcher(isFulfilled(create), state => {
+            .addCase(updateById.fulfilled, state => {
+                state.carForUpdate = null
+            })
+            .addMatcher(isFulfilled(create, deleteById,updateById), state => {
                 state.trigger = !state.trigger
             })
 });
@@ -64,7 +91,9 @@ const {reducer: carReducer, actions} = carSlice;
 const carActions = {
     ...actions,
     getAll,
-    create
+    create,
+    deleteById,
+    updateById
 };
 
 export {
